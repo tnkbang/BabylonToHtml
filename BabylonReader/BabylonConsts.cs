@@ -90,15 +90,15 @@ namespace BabylonToHtml.BabylonReader
         {
             "Windows-1252",   /*Default*/
             "Windows-1252",   /*Latin*/
-            "ISO-8859-2",   /*Eastern European*/
+            "Windows-1250",   /*Eastern European*/
             "windows-1251", /*Cyriilic*/
-            "Windows-932",  /*Japanese*/
-            "Windows-950",  /*Traditional Chinese*/
-            "Windows-936",  /*Simplified Chinese*/
+            "Shift_jis",  /*Japanese*/
+            "big5",  /*Traditional Chinese*/
+            "GB18030",  /*Simplified Chinese*/
             "Windows-1257", /*Baltic*/
             "Windows-1253", /*Greek*/
-            "Windows-949",  /*Korean*/
-            "windows-1254", /*Turkish*/
+            "EUC-KR",  /*Korean*/
+            "ISO-8859-9", /*Turkish*/
             "Windows-1255", /*Hebrew*/
             "Windows-1256", /*Arabic*/
             "Windows-874"   /*Thai*/ 

@@ -107,6 +107,8 @@ namespace BabylonToHtml.BabylonReader
         void parseMetaData(Stream s)
         {
             string headword = string.Empty;
+            bool isUtf8File = false;
+            byte[] rawTitleBytes = null;
             int type = -1;
             while (true)
             {
@@ -126,8 +128,8 @@ namespace BabylonToHtml.BabylonReader
                     switch (block.Data[1])
                     {
                         case 1:
-                            for (int a = 0; a < block.Length - 2; a++) headword += (char)block.Data[pos++];
-                            this.Title = headword;
+                            rawTitleBytes = new byte[block.Length - 2];
+                            Array.Copy(block.Data, 2, rawTitleBytes, 0, block.Length - 2);
                             break;
                         case 2:
                             for (int a = 0; a < block.Length - 2; a++) headword += (char)block.Data[pos++];
@@ -138,6 +140,10 @@ namespace BabylonToHtml.BabylonReader
                             break;
                         case 8:
                             this.DstLng = BabylonConsts.Bgl_language[block.Data[5]];
+                            break;
+                        case 17:
+                            if (block.Length >= 5 && ((byte)block.Data[4] & 0x80) != 0)
+                                isUtf8File = true;
                             break;
                         case 26:
                             type = block.Data[2];
@@ -155,6 +161,24 @@ namespace BabylonToHtml.BabylonReader
                 }
                 else
                     continue;
+            }
+
+            if (isUtf8File)
+            {
+                SrcEnc = "utf-8";
+                DstEnc = "utf-8";
+            }
+
+            // Get title
+            if (rawTitleBytes != null)
+            {
+                Encoding enc = Encoding.UTF8;
+                if (!isUtf8File && !string.IsNullOrEmpty(SrcEnc))
+                {
+                    enc = Encoding.GetEncoding(SrcEnc);
+                }
+
+                Title = enc.GetString(rawTitleBytes);
             }
         }
 
